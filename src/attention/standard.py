@@ -16,16 +16,16 @@ class StandardMultiHeadAttention(nn.Module):
 
 
     def forward(self, x:torch.Tensor) -> torch.Tensor:
-        batch_size, seq_len, _ = x.shape #extract batch size and sequence length from tensor shape
-        Q = self.W_q(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
+        batch_size, seq_len, _ = x.shape #extract batch size and sequence length from tensor shape as shape is (B, L, E)
+        Q = self.W_q(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) #shape becomes (B, L, H, D) the resahped to (B, H, L, D) to make matmul easier
         K = self.W_k(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
         V = self.W_v(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
 
-        A = Q @ torch.transpose(K, dim0=-1, dim1=-2)
+        A = Q @ torch.transpose(K, dim0=-1, dim1=-2)  #after (B, H, L, D) @ (B, H, D, L) shape here becomes (B, H, L, L)
         mask = torch.tril(torch.ones(size=(seq_len, seq_len)))
         A.masked_fill_(mask == 0, float("-inf"))
         print(A[0, 0, :5, :5])  # Should see -inf in upper triangle
-        A = torch.softmax(A/math.sqrt(self.head_dim), dim=-1) 
+        A = torch.softmax(A/math.sqrt(self.head_dim), dim=-1)
         O = (A @ V).transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
         return self.W_o(O)
     
