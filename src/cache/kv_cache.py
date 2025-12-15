@@ -19,7 +19,7 @@ class KVCache():
         )
  
 
-cache = KVCache(batch_size=3, num_heads=8, max_seq_len=1024, head_dim=64)
+cache = KVCache(batch_size=2, num_heads=8, max_seq_len=1024, head_dim=64)
 
 for i in range(3):
     new_k = torch.randn(2, 8, 1, 64)
