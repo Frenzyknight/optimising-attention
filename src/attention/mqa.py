@@ -9,7 +9,7 @@ class MultiQueryAttention(nn.Module):
         self.num_heads = num_heads
         self.head_dim = d_model//num_heads
         self.W_q = nn.Linear(in_features=d_model, out_features=d_model)
-        self.W_k = nn.Linear(in_features=d_model, out_features=self.head_dim) #divide by heads becasue we only have 1 key and value head
+        self.W_k = nn.Linear(in_features=d_model, out_features=self.head_dim) #divide by num heads becasue we only have 1 key and value head
         self.W_v = nn.Linear(in_features=d_model, out_features=self.head_dim)
         self.W_o = nn.Linear(in_features=d_model, out_features=d_model)
         
