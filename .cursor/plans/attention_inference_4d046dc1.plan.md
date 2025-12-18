@@ -74,7 +74,7 @@ If time permits, implement a simple fused attention kernel in Triton:
 
 ## Suggested File Structure
 
-```
+```javascript
 optimising-attention/
 ├── src/
 │   ├── attention/
@@ -98,6 +98,8 @@ optimising-attention/
 └── README.md
 ```
 
+
+
 ## Key Learning Outcomes
 
 - Understanding why MQA/GQA improve inference throughput (reduced memory bandwidth)
@@ -110,5 +112,3 @@ optimising-attention/
 
 - `torch` (with CUDA support)
 - `triton` (for stretch goal)
-- `matplotlib` / `plotly` (for visualization)
-- `rich` (for CLI output)
