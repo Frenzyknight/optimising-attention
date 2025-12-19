@@ -8,16 +8,27 @@ class QuantizedKVCache():
     def __init__(self, batch_len, seq_len, num_heads, head_dim):
         self.cached_k = torch.ones((batch_len, num_heads, seq_len, head_dim), dtype=torch.int8)
         self.cached_v = torch.ones((batch_len, num_heads, seq_len, head_dim), dtype=torch.int8)
-        self.scales_k = torch.zeros(batch_len, num_heads, seq_len, 1)
+        self.scales_k = torch.zeros(batch_len, num_heads, seq_len, 1) 
         self.scales_v = torch.zeros(batch_len, num_heads, seq_len, 1) #the 1 here is a broadcasting placeholder
         self.current_pos = 0
 
 
-    def update(self, new_k, new_v):
-        self.scales_k[:, :, self.current_pos, :] = new_k.abs().max(dim=-1, keepdim=True).values.squeeze(2)/127  #we use 127 here cause of int8 range
-        self.scales_v[:, :, self.current_pos, :] = new_v.abs().max(dim=-1, keepdim=True).values.squeeze(2)/127
-        self.cached_k[:, :, self.current_pos, :] = (new_k/self.scales_k[:, :, self.current_pos, :].unsqueeze(2)).round().clamp(-127, 127).to(torch.int8).squeeze(2)
-        self.cached_v[:, :, self.current_pos, :] = (new_v/self.scales_v[:, :, self.current_pos, :].unsqueeze(2)).round().clamp(-127, 127).to(torch.int8).squeeze(2)
+    def update(self, new_k, new_v):  
+        #we use 127 here cause of int8 range. new_k is (B,H,D) becomes (B,H) after amax
+        self.scales_k[:, :, self.current_pos, :] = new_k.abs().amax(dim=-1)/127  #get absolute values without sign, use amax because max returns (values, indices) tuple
+        self.scales_v[:, :, self.current_pos, :] = new_v.abs().amax(dim=-1)/127  #slice scales_v per token squeezed because slicing removes dimension
+        self.cached_k[:, :, self.current_pos, :] = (
+            (new_k.squeeze(2)/self.scales_k[:, :, self.current_pos, :])
+            .round()
+            .clamp(-127, 127) #safety check from rounding noise, extreme edge cases
+            .to(torch.int8)
+            )
+        self.cached_v[:, :, self.current_pos, :] = (
+        (new_v.squeeze(2)/self.scales_v[:, :, self.current_pos, :])
+        .round()
+        .clamp(-127, 127)
+        .to(torch.int8)
+        )
         self.current_pos += 1
         
     def get(self):
