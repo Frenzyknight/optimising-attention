@@ -111,4 +111,3 @@ optimising-attention/
 ## Dependencies to Add
 
 - `torch` (with CUDA support)
-- `triton` (for stretch goal)
