@@ -33,6 +33,6 @@ class SlidingWindowAttention(nn.Module):
         O = O.transpose(1,2).contiguous().view(batch_len, seq_len, self.d_model)
         return self.W_o(O)
 
-model = SlidingWindowAttention(d_model=512, num_heads=8, num_kv_heads=2, window_size=4)
-x = torch.randn(4, 1024, 512)
-print(model(x).shape)
+# model = SlidingWindowAttention(d_model=512, num_heads=8, num_kv_heads=2, window_size=4)
+# x = torch.randn(4, 1024, 512)
+# print(model(x).shape)

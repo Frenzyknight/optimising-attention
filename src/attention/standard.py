@@ -29,7 +29,7 @@ class StandardMultiHeadAttention(nn.Module):
         O = (A @ V).transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
         return self.W_o(O)
     
-attn = StandardMultiHeadAttention(d_model=512, num_heads=8)
-x = torch.randn(4, 1024, 512)
-out = attn(x)
-print(out.shape)  # prints out (4, 1024, 512)
+# attn = StandardMultiHeadAttention(d_model=512, num_heads=8)
+# x = torch.randn(4, 1024, 512)
+# out = attn(x)
+# print(out.shape)  # prints out (4, 1024, 512)

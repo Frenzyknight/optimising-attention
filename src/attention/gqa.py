@@ -40,8 +40,8 @@ class GroupedQueryAttention(nn.Module):
         O = O.transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
         return self.W_o(O)
 
-model = GroupedQueryAttention(d_model=512, num_heads=8, num_kv_heads=2)
-x = torch.rand(4, 1024, 512)
-y = model(x)
-print(y.shape)
+# model = GroupedQueryAttention(d_model=512, num_heads=8, num_kv_heads=2)
+# x = torch.rand(4, 1024, 512)
+# y = model(x)
+# print(y.shape)
 

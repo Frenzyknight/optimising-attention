@@ -28,7 +28,7 @@ class MultiQueryAttention(nn.Module):
         O = (A @ V).transpose(1,2).contiguous().view(batch_size, seq_len, self.d_model)
         return self.W_o(O)
 
-model = MultiQueryAttention(d_model=512, num_heads=8)
-x = torch.rand(4, 1024, 512)
-y = model(x)
-print(y.shape)
+# model = MultiQueryAttention(d_model=512, num_heads=8)
+# x = torch.rand(4, 1024, 512)
+# y = model(x)
+# print(y.shape)
