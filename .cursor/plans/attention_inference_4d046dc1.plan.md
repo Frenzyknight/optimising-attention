@@ -106,4 +106,3 @@ optimising-attention/
 - How KV cache size affects batch size limits
 - Memory vs compute tradeoffs in attention
 - Profiling GPU workloads with PyTorch profiler
-- (Optional) Introduction to Triton kernel programming
