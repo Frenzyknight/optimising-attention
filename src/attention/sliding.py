@@ -24,7 +24,7 @@ class SlidingWindowAttention(nn.Module):
         Q = Q.view(batch_len, self.num_kv_heads, self.num_queries_per_head, seq_len, self.head_dim)
         K = K.unsqueeze(2)
         A = Q @ K.transpose(-2,-1)
-        mask_lower = torch.tril(torch.ones(seq_len, seq_len))
+        mask_lower = torch.tril(torch.ones(seq_len, seq_len, device="cuda"))
         mask = torch.triu(mask_lower, diagonal=-self.window_size+1)
         A.masked_fill_(mask == 0, float("-inf"))
         A = torch.softmax(A/math.sqrt(self.head_dim), dim=-1)

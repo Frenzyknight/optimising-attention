@@ -22,7 +22,7 @@ class StandardMultiHeadAttention(nn.Module):
         V = self.W_v(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
 
         A = Q @ torch.transpose(K, dim0=-1, dim1=-2)  #after (B, H, L, D) @ (B, H, D, L) shape here becomes (B, H, L, L)
-        mask = torch.tril(torch.ones(size=(seq_len, seq_len)))
+        mask = torch.tril(torch.ones(size=(seq_len, seq_len), device="cuda"))
         A.masked_fill_(mask == 0, float("-inf"))
         print(A[0, 0, :5, :5])  # Should see -inf in upper triangle
         A = torch.softmax(A/math.sqrt(self.head_dim), dim=-1)

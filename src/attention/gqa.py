@@ -32,7 +32,7 @@ class GroupedQueryAttention(nn.Module):
         Q = Q.view(batch_size, self.num_kv_heads, self.num_queries_per_kv, seq_len, self.head_dim) 
         K = K.unsqueeze(2) #(batch_size, self.num_kv_heads, 1, seq_len, self.head_dim)
         A = Q @ K.transpose(-2,-1) 
-        mask = torch.tril(torch.ones(seq_len, seq_len))
+        mask = torch.tril(torch.ones(seq_len, seq_len, device="cuda"))
         A.masked_fill_(mask == 0, float("-inf"))
         A = torch.softmax(A/math.sqrt(self.head_dim), dim=-1)
         V = V.unsqueeze(2)
