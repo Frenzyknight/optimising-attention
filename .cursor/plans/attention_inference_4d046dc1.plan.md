@@ -107,7 +107,3 @@ optimising-attention/
 - Memory vs compute tradeoffs in attention
 - Profiling GPU workloads with PyTorch profiler
 - (Optional) Introduction to Triton kernel programming
-
-## Dependencies to Add
-
-- `torch` (with CUDA support)
