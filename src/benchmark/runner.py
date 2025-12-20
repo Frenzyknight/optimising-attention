@@ -32,7 +32,7 @@ def benchmark_attention( model_class, model_kwargs,  batch_size, seq_len, num_ru
     return {
         "total_time": total_time,
         "avg_latency": avg_time,
-        "throughput" : (batch_size * seq_len) / avg_time,
+        "throughput" : (batch_size * seq_len) / avg_time,   #tokens/sec
         "memory_mb" : (peak_mem/1024**2)
     }
 
