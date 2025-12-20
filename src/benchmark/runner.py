@@ -1,4 +1,3 @@
-from unittest import result
 import torch
 import time
 import os
@@ -34,7 +33,7 @@ def benchmark_attention( model_class, model_kwargs,  batch_size, seq_len, num_ru
         "total_time": total_time,
         "avg_latency": avg_time,
         "throughput" : (batch_size * seq_len) / avg_time,
-        "memeory_mb" : (peak_mem/1024**2)
+        "memory_mb" : (peak_mem/1024**2)
     }
 
 if __name__ == "__main__":
