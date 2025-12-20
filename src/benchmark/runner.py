@@ -7,7 +7,7 @@ from src.attention.mqa import MultiQueryAttention
 from src.attention.gqa import GroupedQueryAttention
 from src.attention.sliding import SlidingWindowAttention
 
-def benchmark_attention( model_class, model_kwargs,  batch_size, seq_len, num_runs=100, warmup=10):
+def benchmark_attention( model_class, model_kwargs,  batch_size, seq_len, num_runs=10000, warmup=10):
     d_model = 512
     attention = model_class(**model_kwargs).to("cuda")
     total_time = 0
